@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react'
 import { Pie, PieChart, Tooltip, Cell, Legend, ResponsiveContainer } from 'recharts'
+import { formatINR } from '../utils/currency'
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#AA66CC', '#FF6699']
 
@@ -26,7 +27,7 @@ export function CategoryChart({ items }) {
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
               ))}
             </Pie>
-            <Tooltip />
+            <Tooltip formatter={(value) => formatINR(value)} />
             <Legend />
           </PieChart>
         </ResponsiveContainer>
