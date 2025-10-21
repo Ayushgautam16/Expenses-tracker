@@ -1,0 +1,16 @@
+{
+  "name": "expense-tracker",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -k -n client,server -c blue,magenta \"npm --prefix client run dev\" \"python3 server/app.py\"",
+    "dev:client": "npm --prefix client run dev",
+    "dev:server": "python3 server/app.py",
+    "build": "npm --prefix client run build",
+    "start": "python3 server/app.py"
+  },
+  "devDependencies": {
+    "concurrently": "9.1.2"
+  }
+}
