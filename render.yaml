@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: expense-tracker
+    runtime: python
+    region: oregon
+    plan: free
+    buildCommand: pip install -r server/requirements.txt && npm --prefix client ci --no-audit --no-fund && npm --prefix client run build
+    startCommand: gunicorn -w 2 -b 0.0.0.0:$PORT server.app:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: WEB_CONCURRENCY
+        value: 2
+    autoDeploy: true
