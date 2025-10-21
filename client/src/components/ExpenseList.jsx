@@ -1,4 +1,5 @@
 import React from 'react'
+import { formatINR } from '../utils/currency'
 
 export function ExpenseList({ items, onEdit, onDelete }) {
   if (!items.length) return <div className="card">No items</div>
@@ -19,7 +20,7 @@ export function ExpenseList({ items, onEdit, onDelete }) {
           {items.map(item => (
             <tr key={item.id}>
               <td>{item.title}</td>
-              <td>{Number(item.amount).toFixed(2)}</td>
+              <td>{formatINR(item.amount)}</td>
               <td>{item.category}</td>
               <td>{item.type}</td>
               <td>{item.date}</td>
