@@ -47,8 +47,8 @@ export function ExpenseForm({ initial, onSubmit, onCancel }) {
         <input type="date" value={form.date} onChange={e => setForm({ ...form, date: e.target.value })} />
       </label>
       <div className="actions">
-        <button type="submit" disabled={!canSubmit}>{initial ? 'Update' : 'Add'}</button>
-        {initial && <button type="button" onClick={onCancel} className="secondary">Cancel</button>}
+        <button type="submit" disabled={!canSubmit} className="btn btn-primary">{initial ? 'Update' : 'Add'}</button>
+        {initial && <button type="button" onClick={onCancel} className="btn btn-ghost">Cancel</button>}
       </div>
     </form>
   )

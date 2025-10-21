@@ -24,8 +24,8 @@ export function ExpenseList({ items, onEdit, onDelete }) {
               <td>{item.type}</td>
               <td>{item.date}</td>
               <td>
-                <button onClick={() => onEdit(item)}>Edit</button>
-                <button className="danger" onClick={() => onDelete(item.id)}>Delete</button>
+                <button className="btn btn-ghost" onClick={() => onEdit(item)}>Edit</button>
+                <button className="btn btn-danger" onClick={() => onDelete(item.id)}>Delete</button>
               </td>
             </tr>
           ))}
