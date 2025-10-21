@@ -4,7 +4,10 @@ import sqlite3
 from pathlib import Path
 from datetime import datetime
 
-DB_PATH = Path(__file__).parent / 'expenses.db'
+# Paths
+BASE_DIR = Path(__file__).resolve().parent
+STATIC_DIR = BASE_DIR.parent / 'client' / 'dist'
+DB_PATH = BASE_DIR / 'expenses.db'
 
 def get_db_connection():
     conn = sqlite3.connect(DB_PATH)
@@ -27,7 +30,11 @@ def init_db():
         )
         conn.commit()
 
-app = Flask(__name__)
+app = Flask(
+    __name__,
+    static_folder=str(STATIC_DIR),  # serve built frontend
+    static_url_path='',             # mount static at '/'
+)
 CORS(app)
 
 # Initialize database at import time (Flask 3 removed before_first_request)
@@ -121,6 +128,22 @@ def summary():
             "balance": income_total - expense_total,
             "byCategory": [{"category": r['category'], "spent": r['spent'] or 0.0} for r in by_category]
         })
+
+# Serve frontend (must be defined after API routes)
+@app.get('/')
+def root_index():
+    return app.send_static_file('index.html')
+
+@app.get('/<path:path>')
+def static_catch_all(path: str):
+    # If a static asset exists, serve it; otherwise fall back to SPA entry
+    candidate = STATIC_DIR / path
+    if candidate.exists() and candidate.is_file():
+        return app.send_static_file(path)
+    # Avoid hijacking unknown API routes
+    if path.startswith('api/'):
+        return jsonify({"error": "Not found"}), 404
+    return app.send_static_file('index.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
